@@ -8,6 +8,22 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+/* 首屏防闪烁：先定语言再渲染 */
+(function(){
+  var l='zh';
+  try{
+    l=localStorage.getItem('pu-lang');
+    if(l!=='en'&&l!=='zh'){
+      l=((navigator.language||'zh').toLowerCase().indexOf('en')===0)?'en':'zh';
+    }
+  }catch(e){
+    l=((navigator.language||'zh').toLowerCase().indexOf('en')===0)?'en':'zh';
+  }
+  document.documentElement.lang=(l==='en'?'en':'zh-CN');
+  document.documentElement.classList.add('lang-'+l);
+})();
+</script>
 <style>
 :root{
   --ink:#1A1626;
@@ -65,6 +81,24 @@ section{position:relative;overflow:hidden}
 .nav-links{display:flex;gap:36px}
 .nav-links a{font-size:14px;font-weight:500;color:var(--nav-link);transition:color .2s}
 .nav-links a:hover{color:var(--primary)}
+
+.nav-right{display:flex;align-items:center;gap:14px}
+
+/* ---------- 语言切换 ---------- */
+.lang-switch{
+  display:flex;align-items:center;gap:2px;padding:3px;
+  border-radius:18px;background:var(--soft);border:1px solid var(--line);
+}
+.lang-switch button{
+  border:0;background:transparent;cursor:pointer;font-family:inherit;
+  padding:5px 13px;border-radius:14px;
+  font-size:13px;font-weight:500;line-height:1.5;color:var(--muted);
+  transition:background .2s,color .2s;
+}
+.lang-switch button:hover{color:var(--primary)}
+.lang-switch button.is-active{background:var(--deep);color:#fff}
+.lang-switch button:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+
 .btn-download{
   display:inline-block;padding:10px 24px;border-radius:22px;
   background:var(--deep);color:#fff;font-size:14px;font-weight:500;transition:opacity .2s;
@@ -72,7 +106,7 @@ section{position:relative;overflow:hidden}
 .btn-download:hover{opacity:.88}
 .btn-solid{
   display:inline-block;padding:12px 28px;border-radius:24px;
-  background:var(--deep);color:#fff;font-size:14px;font-weight:500;transition:opacity .2s;
+  background:var(--deep);color:#fff;font-size:14px;font-weight:500;transition:opacity .2s;white-space:nowrap;
 }
 .btn-solid:hover{opacity:.88}
 
@@ -119,6 +153,8 @@ section{position:relative;overflow:hidden}
 .section-head .head-text{width:760px;display:flex;flex-direction:column;gap:12px}
 .section-title{font-size:36px;font-weight:700;color:var(--ink)}
 .section-sub{font-size:15px;line-height:1.7;color:var(--muted)}
+.head-wide{width:820px}
+.skin-sub{width:700px}
 
 /* ---------- AI 逐帧精修 ---------- */
 .compare-row{display:flex;gap:24px}
@@ -136,11 +172,11 @@ section{position:relative;overflow:hidden}
 .tpl-card .thumb{height:300px;overflow:hidden}
 .tpl-card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
 .tpl-card:hover .thumb img{transform:scale(1.04)}
-.tpl-body{display:flex;align-items:center;justify-content:space-between;padding:16px 18px}
+.tpl-body{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;gap:10px}
 .tpl-name{font-size:16px;font-weight:600;color:var(--ink)}
 .btn-apply{
   display:inline-block;padding:6px 14px;border-radius:14px;
-  background:var(--primary);color:#fff;font-size:12px;font-weight:500;transition:opacity .2s;
+  background:var(--primary);color:#fff;font-size:12px;font-weight:500;transition:opacity .2s;white-space:nowrap;
 }
 .btn-apply:hover{opacity:.88}
 
@@ -207,11 +243,12 @@ section{position:relative;overflow:hidden}
 /* ---------- 常见问题 ---------- */
 .faq{padding:80px 200px;background:var(--soft);display:flex;flex-direction:column;gap:36px}
 .faq-item{
-  display:flex;align-items:center;justify-content:space-between;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
   padding:22px 28px;border-radius:14px;background:#fff;
   font-size:16px;font-weight:500;color:var(--ink);
 }
-.faq-plus{font-family:'Poppins',sans-serif;font-size:20px;color:var(--faq-plus);line-height:1}
+.faq-item span:first-child{min-width:0}
+.faq-plus{font-family:'Poppins',sans-serif;font-size:20px;color:var(--faq-plus);line-height:1;flex:none}
 
 /* ---------- 页脚 ---------- */
 .footer{
@@ -237,7 +274,22 @@ section{position:relative;overflow:hidden}
 .link-col a{font-size:13px;color:var(--footer-muted);transition:color .2s}
 .link-col a:hover{color:#fff}
 .footer-line{position:relative;z-index:1;height:1px;background:var(--footer-line)}
-.footer-bottom{position:relative;z-index:1;display:flex;justify-content:space-between;font-size:12px;color:var(--footer-dim)}
+.footer-bottom{position:relative;z-index:1;display:flex;justify-content:space-between;gap:16px;font-size:12px;color:var(--footer-dim)}
+
+/* ---------- 英文版排版适配 ---------- */
+.lang-en body{
+  font-family:'Poppins','Noto Sans SC',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+.lang-en .hero-title{font-size:46px;line-height:1.22}
+.lang-en .hero-sub{width:600px}
+.lang-en .section-title{font-size:30px;line-height:1.3}
+.lang-en .section-head .head-text{width:860px}
+.lang-en .head-wide{width:1000px}
+.lang-en .skin-sub{width:860px}
+.lang-en .review-text{width:100%}
+.lang-en .faq-item{font-size:15px}
+.lang-en .nav-links{gap:28px}
+.lang-en .chip{font-size:13px;padding:9px 15px}
 
 /* ---------- 响应式兜底 ---------- */
 @media (max-width:1440px){
@@ -247,7 +299,11 @@ section{position:relative;overflow:hidden}
   .footer{padding-left:48px;padding-right:48px}
   .hero-copy{width:52%}
   .hero-sub{width:100%}
+  .lang-en .hero-sub{width:100%}
   .hero-phone{width:38%;height:auto;aspect-ratio:460/580}
+  .section-head .head-text,.lang-en .section-head .head-text{width:auto;flex:1;min-width:0;padding-right:32px}
+  .head-wide,.lang-en .head-wide{width:100%;max-width:1000px}
+  .skin-sub,.lang-en .skin-sub{width:100%;max-width:860px}
 }
 @media (max-width:1080px){
   .nav-links{display:none}
@@ -266,7 +322,8 @@ section{position:relative;overflow:hidden}
   .hero,.pad{padding-left:24px;padding-right:24px}
   .faq{padding-left:24px;padding-right:24px}
   .footer{padding-left:24px;padding-right:24px}
-  .hero-title{font-size:40px}
+  .hero-title,.lang-en .hero-title{font-size:34px}
+  .section-title,.lang-en .section-title{font-size:24px}
   .compare-card,.tpl-card,.case-card,.review-card{flex:1 1 100%}
   .ring{width:300px;height:300px}
   .ring-center{left:57px;top:57px;width:186px;height:186px}
@@ -275,6 +332,7 @@ section{position:relative;overflow:hidden}
   .chip-type{top:262px}
   .skin-photo{width:100%;height:420px}
   .footer-bottom{flex-direction:column;gap:8px}
+  .nav-right{gap:10px}
 }
 </style>
 </head>
@@ -284,17 +342,23 @@ section{position:relative;overflow:hidden}
   <!-- ============ 导航栏 ============ -->
   <header class="nav">
     <a class="brand" href="#top">
-      <img src="assets/logo.png" alt="PrettyUp 图标">
+      <img src="assets/logo.png" alt="PrettyUp 图标" data-i18n-alt="alt.logo">
       <span class="brand-name">PrettyUp</span>
     </a>
     <nav class="nav-links">
-      <a href="#sec-ai">核心功能</a>
-      <a href="#sec-templates">美颜模板</a>
-      <a href="#sec-skin">肤质分析</a>
-      <a href="#sec-creators">创作者案例</a>
-      <a href="#sec-faq">常见问题</a>
+      <a href="#sec-ai" data-i18n="nav.feat">核心功能</a>
+      <a href="#sec-templates" data-i18n="nav.tpl">美颜模板</a>
+      <a href="#sec-skin" data-i18n="nav.skin">肤质分析</a>
+      <a href="#sec-creators" data-i18n="nav.creator">创作者案例</a>
+      <a href="#sec-faq" data-i18n="nav.faq">常见问题</a>
     </nav>
-    <a class="btn-download" href="#top">免费下载</a>
+    <div class="nav-right">
+      <div class="lang-switch" role="group" aria-label="Language / 语言">
+        <button type="button" data-lang="zh" aria-pressed="true">中文</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn-download" href="#top" data-i18n="nav.download">免费下载</a>
+    </div>
   </header>
 
   <!-- ============ Hero 主视觉 ============ -->
@@ -303,23 +367,23 @@ section{position:relative;overflow:hidden}
     <div class="glow" style="width:540px;height:540px;left:-200px;top:420px;background:radial-gradient(circle closest-side,rgba(201,188,228,.4) 0%,rgba(201,188,228,0) 100%)"></div>
 
     <div class="hero-copy">
-      <span class="badge">全新 AI 美颜引擎 V2.0 正式上线</span>
-      <h1 class="hero-title">让每一帧画面
+      <span class="badge" data-i18n="hero.badge">全新 AI 美颜引擎 V2.0 正式上线</span>
+      <h1 class="hero-title" data-i18n="hero.title">让每一帧画面
 都呈现出最好的你</h1>
-      <p class="hero-sub">PrettyUp 是专业的视频人像美化工具：AI 实时瘦脸、磨皮、亮眼、美白，逐帧精修每一段视频，出镜从此零顾虑。</p>
+      <p class="hero-sub" data-i18n="hero.sub">PrettyUp 是专业的视频人像美化工具：AI 实时瘦脸、磨皮、亮眼、美白，逐帧精修每一段视频，出镜从此零顾虑。</p>
       <div class="hero-actions">
-        <a class="btn-white" href="#top">免费下载 App</a>
-        <a class="btn-ghost" href="#sec-ai">在线体验效果</a>
+        <a class="btn-white" href="#top" data-i18n="hero.cta1">免费下载 App</a>
+        <a class="btn-ghost" href="#sec-ai" data-i18n="hero.cta2">在线体验效果</a>
       </div>
       <div class="hero-stats">
-        <div class="stat"><span class="stat-num">1.2 亿+</span><span class="stat-label">视频已完成美化</span></div>
-        <div class="stat"><span class="stat-num">5000 万+</span><span class="stat-label">全球下载用户</span></div>
-        <div class="stat"><span class="stat-num">4.9 分</span><span class="stat-label">应用商店评分</span></div>
+        <div class="stat"><span class="stat-num" data-i18n="stat1.num">1.2 亿+</span><span class="stat-label" data-i18n="stat1.label">视频已完成美化</span></div>
+        <div class="stat"><span class="stat-num" data-i18n="stat2.num">5000 万+</span><span class="stat-label" data-i18n="stat2.label">全球下载用户</span></div>
+        <div class="stat"><span class="stat-num" data-i18n="stat3.num">4.9 分</span><span class="stat-label" data-i18n="stat3.label">应用商店评分</span></div>
       </div>
     </div>
 
     <div class="hero-phone">
-      <img src="assets/hero-phone.png" alt="PrettyUp 应用界面演示">
+      <img src="assets/hero-phone.png" alt="PrettyUp 应用界面演示" data-i18n-alt="alt.hero">
     </div>
   </section>
 
@@ -330,24 +394,24 @@ section{position:relative;overflow:hidden}
     <div class="section-inner">
       <div class="section-head">
         <div class="head-text">
-          <h2 class="section-title">AI 逐帧精修，任何视频都能变成精修现场</h2>
-          <p class="section-sub">导入视频后 AI 自动追踪人脸，瘦脸、磨皮、亮眼一气呵成，每一帧都稳定自然，绝不抖动跳变。</p>
+          <h2 class="section-title" data-i18n="ai.title">AI 逐帧精修，任何视频都能变成精修现场</h2>
+          <p class="section-sub" data-i18n="ai.sub">导入视频后 AI 自动追踪人脸，瘦脸、磨皮、亮眼一气呵成，每一帧都稳定自然，绝不抖动跳变。</p>
         </div>
-        <a class="btn-solid" href="#sec-templates">查看全部效果</a>
+        <a class="btn-solid" href="#sec-templates" data-i18n="ai.btn">查看全部效果</a>
       </div>
 
       <div class="compare-row" style="margin-top:48px">
         <div class="compare-card">
-          <div class="thumb"><img src="assets/compare-1.png" alt="原始素材" loading="lazy"></div>
-          <p>原始素材：自然光下的素颜记录</p>
+          <div class="thumb"><img src="assets/compare-1.png" alt="原始素材" data-i18n-alt="alt.c1" loading="lazy"></div>
+          <p data-i18n="cmp1">原始素材：自然光下的素颜记录</p>
         </div>
         <div class="compare-card">
-          <div class="thumb"><img src="assets/compare-2.png" alt="AI 识别中" loading="lazy"></div>
-          <p>AI 识别中：人脸 108 个关键点追踪</p>
+          <div class="thumb"><img src="assets/compare-2.png" alt="AI 识别中" data-i18n-alt="alt.c2" loading="lazy"></div>
+          <p data-i18n="cmp2">AI 识别中：人脸 108 个关键点追踪</p>
         </div>
         <div class="compare-card">
-          <div class="thumb"><img src="assets/compare-3.png" alt="精修完成" loading="lazy"></div>
-          <p>精修完成：逐帧美颜 · 自然无痕</p>
+          <div class="thumb"><img src="assets/compare-3.png" alt="精修完成" data-i18n-alt="alt.c3" loading="lazy"></div>
+          <p data-i18n="cmp3">精修完成：逐帧美颜 · 自然无痕</p>
         </div>
       </div>
     </div>
@@ -358,27 +422,27 @@ section{position:relative;overflow:hidden}
     <div class="glow" style="width:520px;height:520px;left:-160px;top:-150px;background:radial-gradient(circle closest-side,rgba(220,212,236,.55) 0%,rgba(220,212,236,0) 100%)"></div>
 
     <div class="section-inner">
-      <div class="head-text" style="width:820px">
-        <h2 class="section-title">不同风格的美颜模板，一键套用</h2>
-        <p class="section-sub">从清透日常到氛围感大片，百余套专业调校模板随选随用，套用后还可逐项微调。</p>
+      <div class="head-text head-wide">
+        <h2 class="section-title" data-i18n="tpl.title">不同风格的美颜模板，一键套用</h2>
+        <p class="section-sub" data-i18n="tpl.sub">从清透日常到氛围感大片，百余套专业调校模板随选随用，套用后还可逐项微调。</p>
       </div>
 
       <div class="tpl-row" style="margin-top:44px">
         <div class="tpl-card">
-          <div class="thumb"><img src="assets/tpl-1.png" alt="清透日常" loading="lazy"></div>
-          <div class="tpl-body"><span class="tpl-name">清透日常</span><a class="btn-apply" href="#top">套用</a></div>
+          <div class="thumb"><img src="assets/tpl-1.png" alt="清透日常" data-i18n-alt="alt.t1" loading="lazy"></div>
+          <div class="tpl-body"><span class="tpl-name" data-i18n="tpl1">清透日常</span><a class="btn-apply" href="#top" data-i18n="tpl.apply">套用</a></div>
         </div>
         <div class="tpl-card">
-          <div class="thumb"><img src="assets/tpl-2.png" alt="奶油肌" loading="lazy"></div>
-          <div class="tpl-body"><span class="tpl-name">奶油肌</span><a class="btn-apply" href="#top">套用</a></div>
+          <div class="thumb"><img src="assets/tpl-2.png" alt="奶油肌" data-i18n-alt="alt.t2" loading="lazy"></div>
+          <div class="tpl-body"><span class="tpl-name" data-i18n="tpl2">奶油肌</span><a class="btn-apply" href="#top" data-i18n="tpl.apply">套用</a></div>
         </div>
         <div class="tpl-card">
-          <div class="thumb"><img src="assets/tpl-3.png" alt="氛围大片" loading="lazy"></div>
-          <div class="tpl-body"><span class="tpl-name">氛围大片</span><a class="btn-apply" href="#top">套用</a></div>
+          <div class="thumb"><img src="assets/tpl-3.png" alt="氛围大片" data-i18n-alt="alt.t3" loading="lazy"></div>
+          <div class="tpl-body"><span class="tpl-name" data-i18n="tpl3">氛围大片</span><a class="btn-apply" href="#top" data-i18n="tpl.apply">套用</a></div>
         </div>
         <div class="tpl-card">
-          <div class="thumb"><img src="assets/tpl-4.png" alt="男生素颜感" loading="lazy"></div>
-          <div class="tpl-body"><span class="tpl-name">男生素颜感</span><a class="btn-apply" href="#top">套用</a></div>
+          <div class="thumb"><img src="assets/tpl-4.png" alt="男生素颜感" data-i18n-alt="alt.t4" loading="lazy"></div>
+          <div class="tpl-body"><span class="tpl-name" data-i18n="tpl4">男生素颜感</span><a class="btn-apply" href="#top" data-i18n="tpl.apply">套用</a></div>
         </div>
       </div>
     </div>
@@ -391,17 +455,17 @@ section{position:relative;overflow:hidden}
     <div class="section-inner">
       <div class="section-head">
         <div class="head-text">
-          <h2 class="section-title">肤质与脸型智能分析</h2>
-          <p class="section-sub" style="width:700px">上传视频或自拍，AI 三秒生成专属肤质报告：肤质状态、肤色倾向、脸型比例一目了然，并推荐最适合你的美颜参数。</p>
+          <h2 class="section-title" data-i18n="skin.title">肤质与脸型智能分析</h2>
+          <p class="section-sub skin-sub" data-i18n="skin.sub">上传视频或自拍，AI 三秒生成专属肤质报告：肤质状态、肤色倾向、脸型比例一目了然，并推荐最适合你的美颜参数。</p>
         </div>
-        <a class="btn-solid" href="#top">免费体验分析</a>
+        <a class="btn-solid" href="#top" data-i18n="skin.btn">免费体验分析</a>
       </div>
 
       <div class="skin-row" style="margin-top:48px">
         <div class="ring">
           <div class="ring-center">
             <span class="ring-score">92</span>
-            <span class="ring-label">肌肤状态评分</span>
+            <span class="ring-label" data-i18n="ring.label">肌肤状态评分</span>
           </div>
         </div>
 
@@ -412,9 +476,9 @@ section{position:relative;overflow:hidden}
         </div>
 
         <div class="skin-photo">
-          <img src="assets/analysis-photo.png" alt="肤质分析示例" loading="lazy">
-          <span class="chip chip-tone">肤色：自然冷白皮</span>
-          <span class="chip chip-type">肤质：水油平衡 ✓</span>
+          <img src="assets/analysis-photo.png" alt="肤质分析示例" data-i18n-alt="alt.skin" loading="lazy">
+          <span class="chip chip-tone" data-i18n="chip.tone">肤色：自然冷白皮</span>
+          <span class="chip chip-type" data-i18n="chip.type">肤质：水油平衡 ✓</span>
         </div>
       </div>
     </div>
@@ -426,27 +490,27 @@ section{position:relative;overflow:hidden}
 
     <div class="section-inner more-row">
       <div class="feature-list">
-        <h2 class="section-title">更多功能尽在 PrettyUp 应用</h2>
-        <p class="section-sub">从拍摄、直播到修图，PrettyUp 覆盖出镜的每一个环节。</p>
+        <h2 class="section-title" data-i18n="more.title">更多功能尽在 PrettyUp 应用</h2>
+        <p class="section-sub" data-i18n="more.sub">从拍摄、直播到修图，PrettyUp 覆盖出镜的每一个环节。</p>
         <div class="feature">
-          <h3>视频实时美颜</h3>
-          <p>边录边美，实时预览最终效果，所见即所得。</p>
+          <h3 data-i18n="f1.t">视频实时美颜</h3>
+          <p data-i18n="f1.d">边录边美，实时预览最终效果，所见即所得。</p>
         </div>
         <div class="feature">
-          <h3>一键照片精修</h3>
-          <p>静态照片同样精修，与视频效果完全一致。</p>
+          <h3 data-i18n="f2.t">一键照片精修</h3>
+          <p data-i18n="f2.d">静态照片同样精修，与视频效果完全一致。</p>
         </div>
         <div class="feature">
-          <h3>直播实时美化</h3>
-          <p>支持主流直播推流，开播即开美颜。</p>
+          <h3 data-i18n="f3.t">直播实时美化</h3>
+          <p data-i18n="f3.d">支持主流直播推流，开播即开美颜。</p>
         </div>
         <div class="feature">
-          <h3>身材比例微调</h3>
-          <p>自然调整头肩比与身形比例，背景不变形。</p>
+          <h3 data-i18n="f4.t">身材比例微调</h3>
+          <p data-i18n="f4.d">自然调整头肩比与身形比例，背景不变形。</p>
         </div>
       </div>
 
-      <div class="mockup"><img src="assets/feature-phone.png" alt="PrettyUp 更多功能" loading="lazy"></div>
+      <div class="mockup"><img src="assets/feature-phone.png" alt="PrettyUp 更多功能" data-i18n-alt="alt.more" loading="lazy"></div>
     </div>
   </section>
 
@@ -455,36 +519,48 @@ section{position:relative;overflow:hidden}
     <div class="glow" style="width:540px;height:540px;left:1150px;top:420px;background:radial-gradient(circle closest-side,rgba(211,223,236,.5) 0%,rgba(211,223,236,0) 100%)"></div>
 
     <div class="section-inner">
-      <h2 class="section-title">数百万创作者的信赖之选</h2>
-      <p class="section-sub">从日常 Vlog 到带货直播，他们都在用 PrettyUp 保持最佳镜头状态。</p>
+      <h2 class="section-title" data-i18n="cr.title">数百万创作者的信赖之选</h2>
+      <p class="section-sub" data-i18n="cr.sub">从日常 Vlog 到带货直播，他们都在用 PrettyUp 保持最佳镜头状态。</p>
 
       <div class="case-row" style="margin-top:44px">
         <div class="case-card">
-          <div class="thumb"><img src="assets/case-1.png" alt="小鹿 ALU 的作品" loading="lazy"></div>
+          <div class="thumb"><img src="assets/case-1.png" alt="小鹿 ALU 的作品" data-i18n-alt="alt.case1" loading="lazy"></div>
           <div class="author">
-            <img src="assets/avatar-1.png" alt="小鹿 ALU">
-            <div class="author-info"><span class="author-name">小鹿 ALU</span><span class="author-fans">286 万粉丝 · 美妆博主</span></div>
+            <img src="assets/avatar-1.png" alt="小鹿 ALU" data-i18n-alt="alt.av1">
+            <div class="author-info">
+              <span class="author-name" data-i18n="a1.name">小鹿 ALU</span>
+              <span class="author-fans" data-i18n="a1.fans">286 万粉丝 · 美妆博主</span>
+            </div>
           </div>
         </div>
         <div class="case-card">
-          <div class="thumb"><img src="assets/case-2.png" alt="Kevin 摄影日记的作品" loading="lazy"></div>
+          <div class="thumb"><img src="assets/case-2.png" alt="Kevin 摄影日记的作品" data-i18n-alt="alt.case2" loading="lazy"></div>
           <div class="author">
-            <img src="assets/avatar-2.png" alt="Kevin 摄影日记">
-            <div class="author-info"><span class="author-name">Kevin 摄影日记</span><span class="author-fans">152 万粉丝 · Vlog 作者</span></div>
+            <img src="assets/avatar-2.png" alt="Kevin 摄影日记" data-i18n-alt="alt.av2">
+            <div class="author-info">
+              <span class="author-name" data-i18n="a2.name">Kevin 摄影日记</span>
+              <span class="author-fans" data-i18n="a2.fans">152 万粉丝 · Vlog 作者</span>
+            </div>
           </div>
         </div>
         <div class="case-card">
-          <div class="thumb"><img src="assets/case-3.png" alt="Momo 直播间的作品" loading="lazy"></div>
+          <div class="thumb"><img src="assets/case-3.png" alt="Momo 直播间的作品" data-i18n-alt="alt.case3" loading="lazy"></div>
           <div class="author">
-            <img src="assets/avatar-3.png" alt="Momo 直播间">
-            <div class="author-info"><span class="author-name">Momo 直播间</span><span class="author-fans">98 万粉丝 · 带货主播</span></div>
+            <img src="assets/avatar-3.png" alt="Momo 直播间" data-i18n-alt="alt.av3">
+            <div class="author-info">
+              <span class="author-name" data-i18n="a3.name">Momo 直播间</span>
+              <span class="author-fans" data-i18n="a3.fans">98 万粉丝 · 带货主播</span>
+            </div>
           </div>
         </div>
         <div class="case-card">
-          <div class="thumb"><img src="assets/case-4.png" alt="阿哲同学的作品" loading="lazy"></div>
+          <div class="thumb"><img src="assets/case-4.png" alt="阿哲同学的作品" data-i18n-alt="alt.case4" loading="lazy"></div>
           <div class="author">
-            <img src="assets/avatar-4.png" alt="阿哲同学">
-            <div class="author-info"><span class="author-name">阿哲同学</span><span class="author-fans">64 万粉丝 · 校园博主</span></div>
+            <img src="assets/avatar-4.png" alt="阿哲同学" data-i18n-alt="alt.av4">
+            <div class="author-info">
+              <span class="author-name" data-i18n="a4.name">阿哲同学</span>
+              <span class="author-fans" data-i18n="a4.fans">64 万粉丝 · 校园博主</span>
+            </div>
           </div>
         </div>
       </div>
@@ -496,29 +572,29 @@ section{position:relative;overflow:hidden}
     <div class="glow" style="width:540px;height:540px;left:1140px;top:-140px;background:radial-gradient(circle closest-side,rgba(220,212,236,.5) 0%,rgba(220,212,236,0) 100%)"></div>
 
     <div class="section-inner">
-      <h2 class="section-title">用户的真实反馈</h2>
-      <p class="section-sub">各大应用商店平均 4.9 分，来自 50 万+ 条真实评价。</p>
+      <h2 class="section-title" data-i18n="rv.title">用户的真实反馈</h2>
+      <p class="section-sub" data-i18n="rv.sub">各大应用商店平均 4.9 分，来自 50 万+ 条真实评价。</p>
 
       <div class="review-row" style="margin-top:44px">
         <div class="review-card">
           <span class="stars">★★★★★</span>
-          <p class="review-text">视频美颜里最自然的一款，逐帧处理完全不抖，出片直接发不用二次剪辑。</p>
-          <span class="review-name">糖糖 · 短视频博主</span>
+          <p class="review-text" data-i18n="r1">视频美颜里最自然的一款，逐帧处理完全不抖，出片直接发不用二次剪辑。</p>
+          <span class="review-name" data-i18n="r1.n">糖糖 · 短视频博主</span>
         </div>
         <div class="review-card">
           <span class="stars">★★★★★</span>
-          <p class="review-text">肤质分析特别准，按推荐参数一键套用，同事都问我是不是换了化妆师。</p>
-          <span class="review-name">Iris · 上班族</span>
+          <p class="review-text" data-i18n="r2">肤质分析特别准，按推荐参数一键套用，同事都问我是不是换了化妆师。</p>
+          <span class="review-name" data-i18n="r2.n">Iris · 上班族</span>
         </div>
         <div class="review-card">
           <span class="stars">★★★★★</span>
-          <p class="review-text">直播开着美颜推流一晚上不发热不卡顿，男生素颜感模板也很自然。</p>
-          <span class="review-name">Leo · 游戏主播</span>
+          <p class="review-text" data-i18n="r3">直播开着美颜推流一晚上不发热不卡顿，男生素颜感模板也很自然。</p>
+          <span class="review-name" data-i18n="r3.n">Leo · 游戏主播</span>
         </div>
         <div class="review-card">
           <span class="stars">★★★★★</span>
-          <p class="review-text">暗光环境下依然稳定，背景不变形这点比同类工具强太多，已推荐全组使用。</p>
-          <span class="review-name">Nana · 摄影助理</span>
+          <p class="review-text" data-i18n="r4">暗光环境下依然稳定，背景不变形这点比同类工具强太多，已推荐全组使用。</p>
+          <span class="review-name" data-i18n="r4.n">Nana · 摄影助理</span>
         </div>
       </div>
     </div>
@@ -529,15 +605,15 @@ section{position:relative;overflow:hidden}
     <div class="glow" style="width:500px;height:500px;left:-150px;top:220px;background:radial-gradient(circle closest-side,rgba(211,223,236,.45) 0%,rgba(211,223,236,0) 100%)"></div>
 
     <div class="section-inner">
-      <h2 class="section-title">常见问题解答</h2>
+      <h2 class="section-title" data-i18n="faq.title">常见问题解答</h2>
     </div>
 
     <div class="section-inner" style="display:flex;flex-direction:column;gap:36px">
-      <div class="faq-item"><span>视频处理后画质会有损失吗？</span><span class="faq-plus">+</span></div>
-      <div class="faq-item"><span>PrettyUp 支持哪些平台和格式？</span><span class="faq-plus">+</span></div>
-      <div class="faq-item"><span>美颜效果会显得假吗？能自己调整吗？</span><span class="faq-plus">+</span></div>
-      <div class="faq-item"><span>免费版和会员版有什么区别？</span><span class="faq-plus">+</span></div>
-      <div class="faq-item"><span>处理后的视频和照片安全吗？会被上传吗？</span><span class="faq-plus">+</span></div>
+      <div class="faq-item"><span data-i18n="q1">视频处理后画质会有损失吗？</span><span class="faq-plus">+</span></div>
+      <div class="faq-item"><span data-i18n="q2">PrettyUp 支持哪些平台和格式？</span><span class="faq-plus">+</span></div>
+      <div class="faq-item"><span data-i18n="q3">美颜效果会显得假吗？能自己调整吗？</span><span class="faq-plus">+</span></div>
+      <div class="faq-item"><span data-i18n="q4">免费版和会员版有什么区别？</span><span class="faq-plus">+</span></div>
+      <div class="faq-item"><span data-i18n="q5">处理后的视频和照片安全吗？会被上传吗？</span><span class="faq-plus">+</span></div>
     </div>
   </section>
 
@@ -549,7 +625,7 @@ section{position:relative;overflow:hidden}
           <span class="mark"></span>
           <span>PrettyUp</span>
         </div>
-        <p class="footer-slogan">专业的视频人像美化工具，让每一帧画面都呈现出最好的你。</p>
+        <p class="footer-slogan" data-i18n="ft.slogan">专业的视频人像美化工具，让每一帧画面都呈现出最好的你。</p>
         <div class="store-btns">
           <a class="store" href="#top"><small>Download on the</small><strong>App Store</strong></a>
           <a class="store" href="#top"><small>GET IT ON</small><strong>Google Play</strong></a>
@@ -557,35 +633,186 @@ section{position:relative;overflow:hidden}
       </div>
 
       <div class="link-col">
-        <h4>产品</h4>
-        <a href="#sec-ai">核心功能</a>
-        <a href="#sec-templates">美颜模板</a>
-        <a href="#sec-skin">肤质分析</a>
-        <a href="#top">会员权益</a>
+        <h4 data-i18n="ft.product">产品</h4>
+        <a href="#sec-ai" data-i18n="ft.feat">核心功能</a>
+        <a href="#sec-templates" data-i18n="ft.tpl">美颜模板</a>
+        <a href="#sec-skin" data-i18n="ft.skin">肤质分析</a>
+        <a href="#top" data-i18n="ft.vip">会员权益</a>
       </div>
       <div class="link-col">
-        <h4>支持</h4>
-        <a href="#top">帮助中心</a>
-        <a href="#sec-reviews">用户反馈</a>
-        <a href="#top">联系客服</a>
+        <h4 data-i18n="ft.support">支持</h4>
+        <a href="#top" data-i18n="ft.help">帮助中心</a>
+        <a href="#sec-reviews" data-i18n="ft.feedback">用户反馈</a>
+        <a href="#top" data-i18n="ft.contact">联系客服</a>
       </div>
       <div class="link-col">
-        <h4>公司</h4>
-        <a href="#top">关于我们</a>
-        <a href="#top">加入我们</a>
-        <a href="#top">隐私政策</a>
-        <a href="#top">服务条款</a>
+        <h4 data-i18n="ft.company">公司</h4>
+        <a href="#top" data-i18n="ft.about">关于我们</a>
+        <a href="#top" data-i18n="ft.join">加入我们</a>
+        <a href="#top" data-i18n="ft.privacy">隐私政策</a>
+        <a href="#top" data-i18n="ft.terms">服务条款</a>
       </div>
     </div>
 
     <div class="footer-line"></div>
 
     <div class="footer-bottom">
-      <span>Copyright 2026 PrettyUp 保留所有权利</span>
-      <span>微信 · 微博 · 抖音 · 小红书 · B站</span>
+      <span data-i18n="ft.copy">Copyright 2026 PrettyUp 保留所有权利</span>
+      <span data-i18n="ft.social">微信 · 微博 · 抖音 · 小红书 · B站</span>
     </div>
   </footer>
 
 </div>
+
+<script>
+(function(){
+  var DICT = {
+    zh:{
+      'nav.feat':'核心功能','nav.tpl':'美颜模板','nav.skin':'肤质分析','nav.creator':'创作者案例','nav.faq':'常见问题','nav.download':'免费下载',
+      'hero.badge':'全新 AI 美颜引擎 V2.0 正式上线',
+      'hero.title':'让每一帧画面\n都呈现出最好的你',
+      'hero.sub':'PrettyUp 是专业的视频人像美化工具：AI 实时瘦脸、磨皮、亮眼、美白，逐帧精修每一段视频，出镜从此零顾虑。',
+      'hero.cta1':'免费下载 App','hero.cta2':'在线体验效果',
+      'stat1.num':'1.2 亿+','stat1.label':'视频已完成美化',
+      'stat2.num':'5000 万+','stat2.label':'全球下载用户',
+      'stat3.num':'4.9 分','stat3.label':'应用商店评分',
+      'ai.title':'AI 逐帧精修，任何视频都能变成精修现场',
+      'ai.sub':'导入视频后 AI 自动追踪人脸，瘦脸、磨皮、亮眼一气呵成，每一帧都稳定自然，绝不抖动跳变。',
+      'ai.btn':'查看全部效果',
+      'cmp1':'原始素材：自然光下的素颜记录','cmp2':'AI 识别中：人脸 108 个关键点追踪','cmp3':'精修完成：逐帧美颜 · 自然无痕',
+      'tpl.title':'不同风格的美颜模板，一键套用',
+      'tpl.sub':'从清透日常到氛围感大片，百余套专业调校模板随选随用，套用后还可逐项微调。',
+      'tpl1':'清透日常','tpl2':'奶油肌','tpl3':'氛围大片','tpl4':'男生素颜感','tpl.apply':'套用',
+      'skin.title':'肤质与脸型智能分析',
+      'skin.sub':'上传视频或自拍，AI 三秒生成专属肤质报告：肤质状态、肤色倾向、脸型比例一目了然，并推荐最适合你的美颜参数。',
+      'skin.btn':'免费体验分析','ring.label':'肌肤状态评分',
+      'chip.tone':'肤色：自然冷白皮','chip.type':'肤质：水油平衡 ✓',
+      'more.title':'更多功能尽在 PrettyUp 应用',
+      'more.sub':'从拍摄、直播到修图，PrettyUp 覆盖出镜的每一个环节。',
+      'f1.t':'视频实时美颜','f1.d':'边录边美，实时预览最终效果，所见即所得。',
+      'f2.t':'一键照片精修','f2.d':'静态照片同样精修，与视频效果完全一致。',
+      'f3.t':'直播实时美化','f3.d':'支持主流直播推流，开播即开美颜。',
+      'f4.t':'身材比例微调','f4.d':'自然调整头肩比与身形比例，背景不变形。',
+      'cr.title':'数百万创作者的信赖之选','cr.sub':'从日常 Vlog 到带货直播，他们都在用 PrettyUp 保持最佳镜头状态。',
+      'a1.name':'小鹿 ALU','a1.fans':'286 万粉丝 · 美妆博主',
+      'a2.name':'Kevin 摄影日记','a2.fans':'152 万粉丝 · Vlog 作者',
+      'a3.name':'Momo 直播间','a3.fans':'98 万粉丝 · 带货主播',
+      'a4.name':'阿哲同学','a4.fans':'64 万粉丝 · 校园博主',
+      'rv.title':'用户的真实反馈','rv.sub':'各大应用商店平均 4.9 分，来自 50 万+ 条真实评价。',
+      'r1':'视频美颜里最自然的一款，逐帧处理完全不抖，出片直接发不用二次剪辑。','r1.n':'糖糖 · 短视频博主',
+      'r2':'肤质分析特别准，按推荐参数一键套用，同事都问我是不是换了化妆师。','r2.n':'Iris · 上班族',
+      'r3':'直播开着美颜推流一晚上不发热不卡顿，男生素颜感模板也很自然。','r3.n':'Leo · 游戏主播',
+      'r4':'暗光环境下依然稳定，背景不变形这点比同类工具强太多，已推荐全组使用。','r4.n':'Nana · 摄影助理',
+      'faq.title':'常见问题解答',
+      'q1':'视频处理后画质会有损失吗？','q2':'PrettyUp 支持哪些平台和格式？','q3':'美颜效果会显得假吗？能自己调整吗？',
+      'q4':'免费版和会员版有什么区别？','q5':'处理后的视频和照片安全吗？会被上传吗？',
+      'ft.slogan':'专业的视频人像美化工具，让每一帧画面都呈现出最好的你。',
+      'ft.product':'产品','ft.feat':'核心功能','ft.tpl':'美颜模板','ft.skin':'肤质分析','ft.vip':'会员权益',
+      'ft.support':'支持','ft.help':'帮助中心','ft.feedback':'用户反馈','ft.contact':'联系客服',
+      'ft.company':'公司','ft.about':'关于我们','ft.join':'加入我们','ft.privacy':'隐私政策','ft.terms':'服务条款',
+      'ft.copy':'Copyright 2026 PrettyUp 保留所有权利','ft.social':'微信 · 微博 · 抖音 · 小红书 · B站',
+      'alt.logo':'PrettyUp 图标','alt.hero':'PrettyUp 应用界面演示',
+      'alt.c1':'原始素材','alt.c2':'AI 识别中','alt.c3':'精修完成',
+      'alt.t1':'清透日常','alt.t2':'奶油肌','alt.t3':'氛围大片','alt.t4':'男生素颜感',
+      'alt.skin':'肤质分析示例','alt.more':'PrettyUp 更多功能',
+      'alt.case1':'小鹿 ALU 的作品','alt.case2':'Kevin 摄影日记的作品','alt.case3':'Momo 直播间的作品','alt.case4':'阿哲同学的作品',
+      'alt.av1':'小鹿 ALU','alt.av2':'Kevin 摄影日记','alt.av3':'Momo 直播间','alt.av4':'阿哲同学'
+    },
+    en:{
+      'nav.feat':'Features','nav.tpl':'Templates','nav.skin':'Skin Analysis','nav.creator':'Creators','nav.faq':'FAQ','nav.download':'Free Download',
+      'hero.badge':'The all-new AI Beauty Engine V2.0 is live',
+      'hero.title':'Look your best in\nevery single frame',
+      'hero.sub':'PrettyUp is a professional video retouching tool: real-time AI face sculpting, smoothing, eye brightening and whitening — frame by frame, so being on camera is never a worry again.',
+      'hero.cta1':'Download Free','hero.cta2':'Try It Online',
+      'stat1.num':'120M+','stat1.label':'Videos Retouched',
+      'stat2.num':'50M+','stat2.label':'Global Downloads',
+      'stat3.num':'4.9','stat3.label':'App Store Rating',
+      'ai.title':'AI frame-by-frame retouching — every video a master shot',
+      'ai.sub':'Drop in a video and AI tracks your face automatically, sculpting, smoothing and brightening in one pass. Every frame stays stable and natural, with zero flicker or jitter.',
+      'ai.btn':'View All Effects',
+      'cmp1':'Original: bare-faced footage in natural light','cmp2':'AI at work: 108 facial landmarks tracked','cmp3':'Retouched: frame-by-frame beauty, seamless and natural',
+      'tpl.title':'Beauty presets for every style, one tap to apply',
+      'tpl.sub':'From fresh everyday looks to cinematic moods — over 100 professionally tuned presets, ready to apply and fine-tune item by item.',
+      'tpl1':'Fresh Daily','tpl2':'Creamy Skin','tpl3':'Cinematic Glow','tpl4':'Natural For Men','tpl.apply':'Apply',
+      'skin.title':'Smart Skin and Face Shape Analysis',
+      'skin.sub':'Upload a video or a selfie and AI builds your personal skin report in three seconds — condition, tone and facial proportions at a glance, plus the retouch settings that suit you best.',
+      'skin.btn':'Analyze for Free','ring.label':'Skin Score',
+      'chip.tone':'Skin tone: natural cool ivory','chip.type':'Skin type: balanced oil-water ✓',
+      'more.title':'More inside the PrettyUp app',
+      'more.sub':'From shooting and streaming to photo editing, PrettyUp covers every moment you are on camera.',
+      'f1.t':'Real-time Video Beauty','f1.d':'Retouch while you record and preview the final look live — what you see is what you get.',
+      'f2.t':'One-tap Photo Retouch','f2.d':'Still photos get the same treatment, perfectly consistent with your video look.',
+      'f3.t':'Live Stream Beauty','f3.d':'Works with all major streaming platforms — beauty mode on the moment you go live.',
+      'f4.t':'Body Proportion Tune','f4.d':'Adjusts head-to-shoulder and body proportions naturally, without warping the background.',
+      'cr.title':'Trusted by millions of creators','cr.sub':'From daily vlogs to live commerce, they rely on PrettyUp to stay camera-ready.',
+      'a1.name':'Fawn ALU','a1.fans':'2.86M followers · Beauty Creator',
+      'a2.name':'Kevin Photo Diary','a2.fans':'1.52M followers · Vlogger',
+      'a3.name':'Momo Live','a3.fans':'980K followers · Live Commerce Host',
+      'a4.name':'Azhe','a4.fans':'640K followers · Campus Creator',
+      'rv.title':'Real feedback from real users','rv.sub':'A 4.9 average across app stores, from over 500K genuine reviews.',
+      'r1':'The most natural video beauty app there is. No frame jitter at all — I can post straight away without re-editing.','r1.n':'Tangtang · Short-video Creator',
+      'r2':'The skin analysis is spot on. One tap with the recommended settings and my colleagues asked if I had hired a makeup artist.','r2.n':'Iris · Office Worker',
+      'r3':'Streamed a whole night with beauty mode on — no overheating, no lag. The men\'s natural preset looks great too.','r3.n':'Leo · Game Streamer',
+      'r4':'It stays stable even in low light and the background never warps. Far better than similar tools — my whole team uses it now.','r4.n':'Nana · Photography Assistant',
+      'faq.title':'Frequently Asked Questions',
+      'q1':'Does retouching reduce video quality?','q2':'Which platforms and formats does PrettyUp support?','q3':'Will the beauty effect look fake? Can I adjust it myself?',
+      'q4':'What is the difference between the free and premium versions?','q5':'Are my videos and photos safe? Will they be uploaded?',
+      'ft.slogan':'A professional video retouching tool that makes every frame your best one.',
+      'ft.product':'Product','ft.feat':'Features','ft.tpl':'Templates','ft.skin':'Skin Analysis','ft.vip':'Premium',
+      'ft.support':'Support','ft.help':'Help Center','ft.feedback':'Feedback','ft.contact':'Contact Us',
+      'ft.company':'Company','ft.about':'About Us','ft.join':'Careers','ft.privacy':'Privacy Policy','ft.terms':'Terms of Service',
+      'ft.copy':'Copyright 2026 PrettyUp. All rights reserved.','ft.social':'WeChat · Weibo · Douyin · Xiaohongshu · Bilibili',
+      'alt.logo':'PrettyUp icon','alt.hero':'PrettyUp app interface',
+      'alt.c1':'Original footage','alt.c2':'AI detecting','alt.c3':'Retouched result',
+      'alt.t1':'Fresh Daily','alt.t2':'Creamy Skin','alt.t3':'Cinematic Glow','alt.t4':'Natural For Men',
+      'alt.skin':'Skin analysis sample','alt.more':'More PrettyUp features',
+      'alt.case1':'Work by Fawn ALU','alt.case2':'Work by Kevin Photo Diary','alt.case3':'Work by Momo Live','alt.case4':'Work by Azhe',
+      'alt.av1':'Fawn ALU','alt.av2':'Kevin Photo Diary','alt.av3':'Momo Live','alt.av4':'Azhe'
+    }
+  };
+
+  var TITLE = {
+    zh:'PrettyUp · 视频人像美化工具 — 让每一帧画面都呈现出最好的你',
+    en:'PrettyUp · AI Video Beauty Studio — Look Your Best in Every Frame'
+  };
+
+  function apply(lang){
+    var dict = DICT[lang] || DICT.zh;
+    var root = document.documentElement;
+    root.lang = (lang === 'en') ? 'en' : 'zh-CN';
+    root.classList.remove('lang-zh','lang-en');
+    root.classList.add('lang-' + lang);
+    document.title = TITLE[lang];
+
+    var nodes = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < nodes.length; i++){
+      var k = nodes[i].getAttribute('data-i18n');
+      if (dict[k] != null) nodes[i].textContent = dict[k];
+    }
+    var alts = document.querySelectorAll('[data-i18n-alt]');
+    for (var j = 0; j < alts.length; j++){
+      var ak = alts[j].getAttribute('data-i18n-alt');
+      if (dict[ak] != null) alts[j].setAttribute('alt', dict[ak]);
+    }
+    var btns = document.querySelectorAll('.lang-switch button');
+    for (var b = 0; b < btns.length; b++){
+      var on = btns[b].getAttribute('data-lang') === lang;
+      btns[b].classList.toggle('is-active', on);
+      btns[b].setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+    try { localStorage.setItem('pu-lang', lang); } catch(e){}
+  }
+
+  var switches = document.querySelectorAll('.lang-switch button');
+  for (var s = 0; s < switches.length; s++){
+    switches[s].addEventListener('click', function(){
+      apply(this.getAttribute('data-lang'));
+    });
+  }
+
+  var init = document.documentElement.classList.contains('lang-en') ? 'en' : 'zh';
+  apply(init);
+})();
+</script>
 </body>
 </html>
