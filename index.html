@@ -84,6 +84,25 @@ section{position:relative;overflow:hidden}
 
 .nav-right{display:flex;align-items:center;gap:14px}
 
+/* 汉堡按钮（仅窄屏显示） */
+.nav-toggle{
+  display:none;position:relative;width:40px;height:40px;flex:none;
+  border:1px solid var(--line);border-radius:12px;background:var(--soft);cursor:pointer;
+}
+.nav-toggle span,.nav-toggle span::before,.nav-toggle span::after{
+  position:absolute;left:11px;width:18px;height:2px;background:var(--ink);border-radius:2px;
+  transition:transform .25s,top .25s,background .2s;
+}
+.nav-toggle span{top:19px}
+.nav-toggle span::before{content:"";top:-6px}
+.nav-toggle span::after{content:"";top:6px}
+.nav.open .nav-toggle span{background:transparent}
+.nav.open .nav-toggle span::before{top:0;transform:rotate(45deg)}
+.nav.open .nav-toggle span::after{top:0;transform:rotate(-45deg)}
+
+/* 移动端菜单内的下载按钮（桌面隐藏） */
+.nav-dl{display:none}
+
 /* ---------- 语言切换 ---------- */
 .lang-switch{
   display:flex;align-items:center;gap:2px;padding:3px;
@@ -291,7 +310,7 @@ section{position:relative;overflow:hidden}
 .lang-en .nav-links{gap:28px}
 .lang-en .chip{font-size:13px;padding:9px 15px}
 
-/* ---------- 响应式兜底 ---------- */
+/* ---------- 响应式 ---------- */
 @media (max-width:1440px){
   .page{width:100%}
   .hero,.pad{padding-left:48px;padding-right:48px}
@@ -306,33 +325,74 @@ section{position:relative;overflow:hidden}
   .skin-sub,.lang-en .skin-sub{width:100%;max-width:860px}
 }
 @media (max-width:1080px){
-  .nav-links{display:none}
-  .hero{flex-direction:column;align-items:flex-start}
+  /* 顶栏变吸顶 + 汉堡菜单 */
+  .nav{position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);z-index:50}
+  .nav-toggle{display:flex;align-items:center;justify-content:center}
+  .nav-right{gap:10px}
+  .nav-links{
+    position:absolute;top:100%;left:0;right:0;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:#fff;box-shadow:0 14px 28px rgba(26,15,51,.14);
+    padding:6px 0;border-radius:0 0 16px 16px;
+    max-height:0;overflow:hidden;opacity:0;pointer-events:none;
+    transition:max-height .3s ease,opacity .2s ease;
+  }
+  .nav.open .nav-links{max-height:360px;opacity:1;pointer-events:auto}
+  .nav-links a{padding:14px 24px;font-size:15px}
+  .nav-links a:not(.nav-dl):hover{background:var(--soft);color:var(--nav-link)}
+  .nav-dl{display:block;margin:10px 16px;text-align:center}
+
+  .hero{flex-direction:column;align-items:flex-start;gap:40px}
   .hero-copy,.hero-phone{width:100%}
   .hero-phone{aspect-ratio:460/580;height:auto}
   .compare-row,.tpl-row,.case-row,.review-row{flex-wrap:wrap}
   .compare-card,.tpl-card,.case-card,.review-card{flex:1 1 44%}
-  .skin-row,.more-row{flex-wrap:wrap;gap:48px}
+  .skin-row,.more-row{flex-wrap:wrap;gap:48px;justify-content:center}
   .review-text{width:100%}
   .faq{padding-left:48px;padding-right:48px}
   .footer-top{flex-wrap:wrap;gap:40px}
   .footer-brand{width:100%;max-width:380px}
 }
+@media (max-width:768px){
+  /* 更多功能 / 肤质分析 改为整列堆叠 */
+  .more-row{flex-direction:column;align-items:stretch;gap:40px}
+  .feature-list{order:2}
+  .mockup{width:100%;height:auto;aspect-ratio:460/560;order:1}
+  .skin-row{flex-direction:column;gap:24px}
+  .arrow{transform:rotate(90deg)}
+  .section-head{flex-direction:column;align-items:flex-start;gap:20px}
+  .section-head .btn-solid{align-self:flex-start}
+}
 @media (max-width:640px){
   .hero,.pad{padding-left:24px;padding-right:24px}
   .faq{padding-left:24px;padding-right:24px}
   .footer{padding-left:24px;padding-right:24px}
+  .nav{padding-left:24px;padding-right:24px}
   .hero-title,.lang-en .hero-title{font-size:34px}
   .section-title,.lang-en .section-title{font-size:24px}
   .compare-card,.tpl-card,.case-card,.review-card{flex:1 1 100%}
+  .compare-card .thumb{height:240px}
+  .tpl-card .thumb{height:240px}
+  .case-card .thumb{height:220px}
   .ring{width:300px;height:300px}
   .ring-center{left:57px;top:57px;width:186px;height:186px}
   .ring-score{font-size:46px}
   .chip-tone{top:210px}
   .chip-type{top:262px}
   .skin-photo{width:100%;height:420px}
+  .hero-stats{flex-wrap:wrap;gap:20px 28px}
+  .hero-actions{flex-wrap:wrap}
+  .hero-actions .btn-white,.hero-actions .btn-ghost{flex:1 1 auto;min-width:140px;text-align:center}
   .footer-bottom{flex-direction:column;gap:8px}
-  .nav-right{gap:10px}
+  .nav-right{gap:8px}
+  .nav-right .btn-download{display:none}
+  .link-col{flex:1 1 40%}
+}
+@media (max-width:400px){
+  .hero-title,.lang-en .hero-title{font-size:28px}
+  .stat-num{font-size:22px}
+  .brand-name{font-size:20px}
+  .hero-actions .btn-white,.hero-actions .btn-ghost{flex:1 1 100%}
 }
 </style>
 </head>
@@ -351,12 +411,14 @@ section{position:relative;overflow:hidden}
       <a href="#sec-skin" data-i18n="nav.skin">肤质分析</a>
       <a href="#sec-creators" data-i18n="nav.creator">创作者案例</a>
       <a href="#sec-faq" data-i18n="nav.faq">常见问题</a>
+      <a class="btn-download nav-dl" href="https://play.google.com/store/apps/details?id=com.accordion.prettyo" target="_blank" rel="noopener noreferrer" data-i18n="nav.download">免费下载</a>
     </nav>
     <div class="nav-right">
       <div class="lang-switch" role="group" aria-label="Language / 语言">
         <button type="button" data-lang="zh" aria-pressed="true">中文</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
       </div>
+      <button class="nav-toggle" type="button" aria-label="菜单" aria-expanded="false"><span></span></button>
       <a class="btn-download" href="https://play.google.com/store/apps/details?id=com.accordion.prettyo" target="_blank" rel="noopener noreferrer" data-i18n="nav.download">免费下载</a>
     </div>
   </header>
@@ -808,6 +870,23 @@ section{position:relative;overflow:hidden}
     switches[s].addEventListener('click', function(){
       apply(this.getAttribute('data-lang'));
     });
+  }
+
+  /* 移动端菜单开合 */
+  var navEl = document.querySelector('.nav');
+  var toggle = document.querySelector('.nav-toggle');
+  if (toggle && navEl){
+    toggle.addEventListener('click', function(){
+      var open = navEl.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    var menuLinks = navEl.querySelectorAll('.nav-links a');
+    for (var m = 0; m < menuLinks.length; m++){
+      menuLinks[m].addEventListener('click', function(){
+        navEl.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    }
   }
 
   var init = document.documentElement.classList.contains('lang-en') ? 'en' : 'zh';
