@@ -1,3 +1,30 @@
+# 作品集
+
+| 作品 | 说明 | 在线链接 |
+| --- | --- | --- |
+| 女巫的宝石小铺 | 宝石商店经营小游戏 Demo | https://momonote.github.io/cbn-website-design/gem-shop/ |
+| cbn网站设计案例 | PrettyUp 视频人像美化工具官网 | https://momonote.github.io/cbn-website-design/ |
+
+---
+
+# 女巫的宝石小铺
+
+宝石商店经营小游戏 Demo：采购原石 → 敲击开石 → 抛光宝石 → 加工首饰 → 交付订单。
+
+## 在线试玩
+
+https://momonote.github.io/cbn-website-design/gem-shop/
+
+## 玩法
+
+矿市采购普通 / 珍稀产地原石 → 敲击薄点开石（敲中越多收益越高）→ 拖动抛光布把宝石擦出光 → 裸石入框加工成戒面 / 垂挂 / 棱角首饰 → 上架接单交付。6 种宝石形态 × 8 个色系，珍稀产地（克什米尔 / 缅甸 Mogok / 马亨盖 / 乌拉尔 / 锡兰）产出带家族色光晕的特殊宝石。
+
+## 技术
+
+原生 HTML + CSS + JavaScript 单文件，零外部依赖，素材（宝石精灵表、5 张产地原石）全部 base64 内联，约 3.4MB，双击即玩。竖屏 375px 居中布局，进度存 `localStorage`，支持 5 个存档槽（含一个 99999999 金币测试档）。
+
+---
+
 # cbn网站设计案例
 
 PrettyUp 视频人像美化工具官网 —— 单页静态站点，由设计稿直接导出还原。
